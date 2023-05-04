@@ -1,5 +1,5 @@
-from src.repository import RouteRecommenderRepository
-from src.token_manager import TokenManager
+from backend.repository import RouteRecommenderRepository
+from backend.token_manager import TokenManager
 
 from collections import deque
 import numpy as np
@@ -149,17 +149,19 @@ class RouteRecommenderModel:
             use_prev_history,
             use_common_weights,
             lvl_activity
-    ):
-        self.__update_vector(user_id, included_categories)
+    ):        
+        error = self.__update_vector(user_id, included_categories, hard_excluded_categories, use_prev_history)
+        if error:
+            return None, error
 
         if use_prev_history:
             user = self.__repo.get_user(user_id)
-            user_vector = user['vector']
+            user_vector = set(user['categories'])
         else:
-            categories_vector = self.__repo.get_all_categories_vector()
-            for category in included_categories:
-                categories_vector[category] = 1
-            user_vector = categories_vector
+            # categories_vector = self.__repo.get_all_categories_vector()
+            # for category in included_categories:
+            #     categories_vector[category] = 1
+            user_vector = set(included_categories) - set(hard_excluded_categories)
 
         if lvl_activity != "Не имеет значения":
             places = self.__repo.get_places_by_lvl_activity(lvl_activity)
@@ -169,36 +171,79 @@ class RouteRecommenderModel:
         places_with_rang = []
         weights = self.__repo.get_categories_weight_vector(use_common_weights)
 
+        # for w in weights.values():
+        #     if w < 0.1:
+        #         print("w = ", w)
+
         copied_weights = weights.copy()
         for category in soft_excluded_categories:
             copied_weights[category] -= 0.1
 
-        for place in places:
-            skip_place = False
-            for category in hard_excluded_categories:
-                if place['vector'][category] != 0:
-                    skip_place = True
-                    break
-            if skip_place:
-                continue
+        i = 0
 
-            place_with_rang = place.copy()
+        hard_c = set(hard_excluded_categories)
+        for place in places:
+            # skip_place = False
+            place_vector = set(place['categories'])
+            if place_vector.intersection(hard_c):
+                continue
+            # for category in hard_excluded_categories:
+                # if place['vector'][category] != 0:
+                # if category in place['categories']:
+                #     skip_place = True
+                #     break
+            # if skip_place:
+            #     continue
+
+            p_with_rang = place.copy()
+
+            gen_categories = user_vector.union(place_vector)
+            u_vec = [1 if c in user_vector else 0 
+                     for c in gen_categories]
+            p_vec = [1 if c in place_vector else 0 
+                     for c in gen_categories]
+            w_vec = [copied_weights[c] for c in gen_categories 
+                     if c in copied_weights]
+
+            # lst = [user_vector] + [place['categories']]
+
+            # with open("data_json/1_test/vec.json", "w", encoding='utf8') as data_file:
+            #     json.dump(lst, data_file, ensure_ascii=False)
 
             try:
-                place_with_rang['rang'] = distance.cosine(
-                    list(user_vector.values()),
-                    list(place['vector'].values()),
-                    list(copied_weights.values())
-                )
+                p_with_rang['rang'] = 1 - distance.cosine(
+                                            u_vec, p_vec, w_vec)
+                    # list(u_vec), list(p_vec), list(w_vec))
+                # place_with_rang['rang'] = distance.cosine(
+                #     list(user_vector.values()),
+                #     list(place['vector'].values()),
+                #     list(copied_weights.values())
+                # )
             except:
-                print("user_vector count: " + str(len(list(user_vector.values()))))
-                print("place vector count: " + str(len(list(place['vector'].values()))))
-                print("copied_weights count: " + str(len(list(copied_weights.values()))))
-                place_with_rang['rang'] = 0
+                # print("user_vector count: " + str(len(list(user_vector.values()))))
+                # print("place vector count: " + str(len(list(place['vector'].values()))))
+                # print("copied_weights count: " + str(len(list(copied_weights.values()))))
+                print("user_vector count: " + str(len(u_vec)))
+                print("place vector count: " + str(len(p_vec)))
+                print("copied_weights count: " + str(len(w_vec)))
+                p_with_rang['rang'] = 0
 
-            places_with_rang.append(place_with_rang)
+            if i < 2:
+                print("p_rang: " + str(p_with_rang['rang']))
+                print("u_vec: " + str(u_vec))
+                print("p_vec: " + str(p_vec))
+                print("w_vec: " + str(w_vec))
+
+            places_with_rang.append(p_with_rang)
+            i += 1
 
         return sorted(places_with_rang, key=lambda p: p['rang'], reverse=True), None
+
+        # res = sorted(places_with_rang, key=lambda p: p['rang'])
+        # # for p in res:
+        # #     print(p['rang'])
+
+        # return res, None
 
 
     def __filter_places(self, places, start_place, start_time, end_time, lvl_saturation_stay):
@@ -234,8 +279,9 @@ class RouteRecommenderModel:
                     duration = durations[subway]
                     break
             
-            p_vector = place['vector']
-            p_categories = [key for key in p_vector if p_vector[key] == 1]
+            # p_vector = place['vector']
+            # p_categories = [key for key in p_vector if p_vector[key] == 1]
+            p_categories = place['categories']
             times = [category['stay_time'] for category in categories
                      if category['name'] in p_categories]
             
@@ -248,24 +294,46 @@ class RouteRecommenderModel:
                     filtered_places.append(place)
 
         return filtered_places, max_seconds, None
+    
+
+    def __update_vector(self, user_id, included_categories, excluded_categories, use_prev_history):
+        old_set = set()
+
+        req_categories, err = self.__repo.get_last_request(user_id)
+        if err and use_prev_history:
+            return err
+        elif not err:
+            old_set = set(req_categories['included_categories']) - set(req_categories['hard_excluded_categories'])
+        u_set = old_set.union(set(included_categories)) - set(excluded_categories)
+
+        self.__repo.update_user_vector(user_id, list(u_set))
+        return None
 
 
-    def __update_vector(self, user_id, included_categories):
-        user = self.__repo.get_user(user_id)
-        user_vector = user['vector']
-        categories_vector = self.__repo.get_all_categories_vector()
-        for category in included_categories:
-            categories_vector[category] = 1
+    # def __update_vector(self, user_id, included_categories):
+    #     user = self.__repo.get_user(user_id)
+    #     user_vector = user['vector']
+    #     categories_vector = self.__repo.get_all_categories_vector()
+    #     for category in included_categories:
+    #         categories_vector[category] = 1
 
-        sum_vector = np.add.reduce([list(user_vector.values()), list(categories_vector.values())])
-        normalized_vector = sum_vector / np.linalg.norm(sum_vector)
+    #     print("categories_vector: ", categories_vector, "\n")
 
-        categories_normalized_vector = dict()
-        i = 0
-        for category in categories_vector:
-            categories_normalized_vector[category] = normalized_vector[i]
-            i += 1
-        self.__repo.update_user_vector(user_id, categories_normalized_vector)
+    #     # self.__repo.update_user_vector(user_id, categories_vector)
+
+    #     # sum_vector = np.add.reduce([list(user_vector.values()), list(categories_vector.values())])
+    #     sum_vector = list(user_vector.values())
+    #     normalized_vector = sum_vector / np.linalg.norm(sum_vector)
+
+    #     # print("dif sets:", set(categories_vector.values())^set(normalized_vector))
+
+    #     categories_normalized_vector = dict()
+    #     i = 0
+    #     for category in categories_vector:
+    #         categories_normalized_vector[category] = normalized_vector[i]
+    #         i += 1
+
+    #     self.__repo.update_user_vector(user_id, categories_normalized_vector)
 
 
     def __build_route(self, places, start_place_name, start_time, max_seconds, exclude_low_rang_routes, limit=10):

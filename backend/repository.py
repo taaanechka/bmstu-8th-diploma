@@ -22,7 +22,7 @@ class RouteRecommenderRepository:
                                         self.__user + ':' + self.__password + 
                                         '@' + self.__host + ':' + self.__port + '/')
 
-            self.__categories_vector = self.__get_categories_vector()
+            # self.__categories_vector = self.__get_categories_vector()
 
         except Exception as e:
             print(e)
@@ -45,8 +45,8 @@ class RouteRecommenderRepository:
 
         new_user = {
             'login': login,
-            'password': password,
-            'vector': self.__categories_vector
+            'password': password #,
+            # 'vector': self.__categories_vector
         }
         user_id = db.users.insert_one(new_user).inserted_id
         return str(user_id)
@@ -55,12 +55,13 @@ class RouteRecommenderRepository:
         db = self.__client['rs-route']
         places = db.places.find()
 
-        res = []
-        for place in places:
-            p_vector = place['vector']
-            p_categories = [key for key in p_vector if p_vector[key] == 1]
-            if len(p_categories) != 0:
-                res.append(place)
+        res = [place for place in places if len(place['categories']) != 0]
+        # res = []
+        # for place in places:
+        #     p_vector = place['vector']
+        #     p_categories = [key for key in p_vector if p_vector[key] == 1]
+        #     if len(p_categories) != 0:
+        #         res.append(place)
         return res
     
     def get_places_by_lvl_activity(self, lvl_activity):
@@ -69,17 +70,20 @@ class RouteRecommenderRepository:
         names = [category['name'] for category in categories]
         places = self.get_all_places()
 
-        i = 0
-        res_places = []
-        for place in places:
-            i += 1
-            p_vector = place['vector']
+        res_places = [place for place in places if set(place['categories']).intersection(set(names))]
+        print("len filtered_places: ", len(res_places))
+
+        # i = 0
+        # res_places = []
+        # for place in places:
+        #     i += 1
+        #     p_vector = place['vector']
             
-            for key in p_vector:
-                if p_vector[key] == 1 and key in names:
-                    res_places.append(place)
-                    break
-        print("len filtered_places: ", len(res_places), i)
+        #     for key in p_vector:
+        #         if p_vector[key] == 1 and key in names:
+        #             res_places.append(place)
+        #             break
+        # print("len filtered_places: ", len(res_places), i)
         return res_places
 
     def get_places(self, places_data):
@@ -115,16 +119,32 @@ class RouteRecommenderRepository:
                 'lvl_activity': request['lvl_activity']
             })
         return story
+    
+    def get_last_request(self, user_id):
+        db = self.__client['rs-route']
+        cursor = db.requests.find({'user_id': user_id}).sort('_id', -1)
+
+        u_reqs = [el for el in cursor]
+        if len(u_reqs) == 0:
+            return None, "Отсутствует история запросов пользователя"
+        
+        req = u_reqs[0]
+        res = {
+            'included_categories': req['included_categories'],
+            'soft_excluded_categories': req['soft_excluded_categories'],
+            'hard_excluded_categories': req['hard_excluded_categories']
+        }
+        return res, None
 
     def update_user_vector(self, user_id, new_vector):
         db = self.__client['rs-route']
         user = db.users.update_one(
             {'_id': ObjectId(user_id)},
-            {'$set': {'vector': new_vector}}
+            {'$set': {'categories': new_vector}}
         )
 
-    def get_all_categories_vector(self):
-        return self.__categories_vector.copy()
+    # def get_all_categories_vector(self):
+    #     return self.__categories_vector.copy()
 
     def get_categories_weight_vector(self, use_common_weights):
         db = self.__client['rs-route']
@@ -177,12 +197,12 @@ class RouteRecommenderRepository:
         db = self.__client['rs-route']
         db.feedbacks.insert_one(feedback)
 
-    def __get_categories_vector(self):
-        db = self.__client['rs-route']
-        categories = dict()
-        slug_dict = dict()
-        for category in db.categories.find():
-            categories[category['name']] = 0
-            # if 'slug' in category:
-            #     slug_dict[category['slug']] = category['name']
-        return categories
+    # def __get_categories_vector(self):
+    #     db = self.__client['rs-route']
+    #     categories = dict()
+    #     # slug_dict = dict()
+    #     for category in db.categories.find():
+    #         categories[category['name']] = 0
+    #         # if 'slug' in category:
+    #         #     slug_dict[category['slug']] = category['name']
+    #     return categories

@@ -1,11 +1,11 @@
-from src.controller import RouteRecommenderController
-from src.model import RouteRecommenderModel
-from src.repository import RouteRecommenderRepository
-from src.token_manager import TokenManager
+from backend.controller import RouteRecommenderController
+from backend.model import RouteRecommenderModel
+from backend.repository import RouteRecommenderRepository
+from backend.token_manager import TokenManager
 
 
 class RouteRecommenderFactory:
-    def __init__(self, config_file='../config/.env'):
+    def __init__(self, config_file='./config/.env'):
         self.__config = config_file
 
     def makeController(self):

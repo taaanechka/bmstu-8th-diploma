@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, render_template
 import os
 from dotenv import load_dotenv
 
-from src.model import RouteRecommenderModel
+from backend.model import RouteRecommenderModel
 
 
 class RouteRecommenderController:
