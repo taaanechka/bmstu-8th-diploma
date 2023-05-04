@@ -268,14 +268,19 @@ class RouteRecommenderModel:
         self.__repo.update_user_vector(user_id, categories_normalized_vector)
 
 
-    def __build_route(self, places, start_place, start_time, max_seconds, exclude_low_rang_routes, limit=10):
+    def __build_route(self, places, start_place_name, start_time, max_seconds, exclude_low_rang_routes, limit=10):
+        start_station = self.__repo.get_station(start_place_name)
+        start_durations = start_station['duration']
+        stations = self.__repo.get_metro_stations()
+
         routes = []
+        sum_rang = 0
 
         stack = deque()
         stack.append(
             {
                 "idx": -1,
-                "route": [],
+                "route": [],    # [(idx, sum_rang)]
             }
         )
 
@@ -288,16 +293,18 @@ class RouteRecommenderModel:
             if len(routes) == limit:
                 break
 
-            cur_route = [places[i] for i in node["route"]]
-            if exclude_low_rang_routes and not self.__check_rang(cur_route):
+            cur_node_route = [elem[0] for elem in node["route"]]
+            cur_route = [places[i] for i in cur_node_route]
+            sum_rang = 0 if len(cur_node_route) == 0 else node["route"][-1][1]
+            if exclude_low_rang_routes and not self.__check_rang(len(cur_route), sum_rang):
                 continue
 
-            check_time, _ = self.__check_time(start_place, cur_route, max_seconds)
+            check_time, _ = self.__check_time(start_durations, stations, cur_route, max_seconds)
             if check_time == 1:
                 continue
 
             if check_time == 2:
-                routes += [self.__optimize_route(start_place, start_time, cur_route)]
+                routes += [self.__optimize_route(start_place_name, start_durations, stations, start_time, cur_route)]
                 print("depth: " + str(node["idx"]) + ", routes count: " + str(len(routes)))
                 stack.pop()
                 continue
@@ -308,7 +315,7 @@ class RouteRecommenderModel:
             stack.append(
                 {
                     "idx": node["idx"],
-                    "route": node["route"] + [node["idx"]],
+                    "route": node["route"] + [(node["idx"], sum_rang + places[node["idx"]]["rang"])],
                 }
             )
 
@@ -366,15 +373,11 @@ class RouteRecommenderModel:
     # 1 - route duration is more than max seconds
     # 2 - route is full
     # 3 - route is not full
-    def __check_time(self, start_place, places, max_seconds, eps=2400):
+    def __check_time(self, start_durations, stations, places, max_seconds, eps=2400):
         dist = 0
         if len(places) == 0:
             return 3, max_seconds - dist
         
-        start_station = self.__repo.get_station(start_place)
-        start_durations = start_station['duration']
-        stations = self.__repo.get_metro_stations()
-
         matrix = self.__get_distance_matrix(start_durations, stations, places)
         np_matrix = np.array(matrix)
         _, dist = solve_tsp_dynamic_programming(np_matrix)
@@ -389,34 +392,24 @@ class RouteRecommenderModel:
             return 3, max_seconds - dist
 
 
-    def __check_rang(self, places, limit=0.001):
-        n = len(places)
-        if n == 0:
+    def __check_rang(self, count_places, sum_rang, limit=0.001):
+        if count_places == 0:
             return True
-        
-        avg_rang = sum([place['rang'] for place in places]) / n
-        return avg_rang > limit
+        return sum_rang / count_places > limit
 
 
-    def __optimize_route(self, start_place, start_time, route):
-        start_station = self.__repo.get_station(start_place)
-        start_durations = start_station['duration']
-
-        stations = self.__repo.get_metro_stations()
-
+    def __optimize_route(self, start_place_name, start_durations, stations, start_time, route):
         matrix = self.__get_distance_matrix(start_durations, stations, route)
         np_matrix = np.array(matrix)
         permutation, _ = solve_tsp_dynamic_programming(np_matrix)
 
         optimized_route = []
+        next_place_title = ""
 
         for i in range(len(permutation) - 1):
-            if i != 0:  # cur_place - место из маршрута
-                cur_place = route[permutation[i] - 1]
-                cur_place_title = cur_place['title']
-            else:       # cur_place -- станция метро
-                cur_place = start_station
-                cur_place_title = start_place
+            # i == 0 => cur_place -- начальная станция метро
+            # i != 0 => cur_place -- место из маршрута
+            cur_place_title = next_place_title if i != 0 else start_place_name
 
             next_place = route[permutation[i + 1] - 1]
 
@@ -432,12 +425,12 @@ class RouteRecommenderModel:
 
                 cur_h = next_h + hours_to_next_place + (next_m + min_to_next_place) // 60
                 cur_m = (next_m + min_to_next_place) % 60
-            else:       # cur_place -- станция метро
+            else:       # cur_place -- начальная станция метро
                 prev_time_str = start_time
 
-                prev_time = start_time.split(":")
-                cur_h = int(prev_time[0]) + int(hours_to_next_place) + (int(prev_time[1]) + int(min_to_next_place)) // 60
-                cur_m = (int(prev_time[1]) + int(min_to_next_place)) % 60
+                [prev_h, prev_min] = [int(elem) for elem in start_time.split(":")]
+                cur_h = prev_h + hours_to_next_place + (prev_min + min_to_next_place) // 60
+                cur_m = (prev_min + min_to_next_place) % 60
             
             full_m = cur_m + (next_place['stay_time']) // 60
             next_h = int(cur_h + full_m // 60)
@@ -450,13 +443,15 @@ class RouteRecommenderModel:
             if next_m < 10:
                 next_need_zero = "0"
 
+            next_place_title = next_place['title']
+
             optimized_route += [
                 {
-                    "step": cur_place_title + " → " + next_place['title'],
+                    "step": cur_place_title + " → " + next_place_title,
                     "time": prev_time_str + " — " + str(cur_h) + ":" + need_zero + str(cur_m)
                 },
                 {
-                    "step": next_place['title'],
+                    "step": next_place_title,
                     "time": str(cur_h) + ":" + need_zero + str(cur_m) + " — " + str(next_h) + ":" + next_need_zero + str(next_m)
                 }
             ]

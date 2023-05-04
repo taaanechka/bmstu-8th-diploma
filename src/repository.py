@@ -1,8 +1,6 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
-import json
-
 import os
 from dotenv import load_dotenv
 
@@ -24,7 +22,7 @@ class RouteRecommenderRepository:
                                         self.__user + ':' + self.__password + 
                                         '@' + self.__host + ':' + self.__port + '/')
 
-            self.__categories_vector, self.__slug_dict = self.__get_categories_vector()
+            self.__categories_vector = self.__get_categories_vector()
 
         except Exception as e:
             print(e)
@@ -185,6 +183,6 @@ class RouteRecommenderRepository:
         slug_dict = dict()
         for category in db.categories.find():
             categories[category['name']] = 0
-            if 'slug' in category:
-                slug_dict[category['slug']] = category['name']
-        return categories, slug_dict
+            # if 'slug' in category:
+            #     slug_dict[category['slug']] = category['name']
+        return categories
