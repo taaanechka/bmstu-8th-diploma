@@ -4,6 +4,7 @@ from backend.token_manager import TokenManager
 from collections import deque
 import numpy as np
 from scipy.spatial import distance
+from datetime import datetime
 
 from python_tsp.exact import solve_tsp_dynamic_programming
 
@@ -112,8 +113,7 @@ class RouteRecommenderModel:
             use_common_weights,
             exclude_low_rang_routes,
             lvl_saturation_stay,
-            lvl_activity,
-            root = None
+            lvl_activity
     ):
         filtered_places_data = []
         for place in filtered_places:
@@ -149,8 +149,28 @@ class RouteRecommenderModel:
             use_prev_history,
             use_common_weights,
             lvl_activity
-    ):        
-        error = self.__update_vector(user_id, included_categories, hard_excluded_categories, use_prev_history)
+    ):
+        if len(included_categories) == 0 and not use_prev_history:
+            included_categories = self.__repo.get_categories_names()
+
+        hard_c = set(hard_excluded_categories)
+        inc_c = set(included_categories)
+
+        winter_months = [12, 1, 2]
+        summer_months = [6, 7, 8]
+
+        winter_c = set(["Зимние развлечения", "Активный зимний отдых", "Открытые катки", "Катки",
+                        "Горные лыжи", "Катание на лыжах", "Катание на ватрушках", "Сноуборд"])
+        summer_c = set(["Летние развлечения", "Пляжи", "Кинотеатры под открытым небом", 
+                        "Прокат лодок и катеров"])
+        
+        cur_month = datetime.now().month
+        if cur_month not in winter_months:
+            hard_c = hard_c.union(winter_c - inc_c)
+        elif cur_month not in summer_months:
+            hard_c = hard_c.union(summer_c - inc_c)
+
+        error = self.__update_vector(user_id, inc_c, hard_c, use_prev_history)
         if error:
             return None, error
 
@@ -158,10 +178,7 @@ class RouteRecommenderModel:
             user = self.__repo.get_user(user_id)
             user_vector = set(user['categories'])
         else:
-            # categories_vector = self.__repo.get_all_categories_vector()
-            # for category in included_categories:
-            #     categories_vector[category] = 1
-            user_vector = set(included_categories) - set(hard_excluded_categories)
+            user_vector = inc_c - hard_c
 
         if lvl_activity != "Не имеет значения":
             places = self.__repo.get_places_by_lvl_activity(lvl_activity)
@@ -171,29 +188,16 @@ class RouteRecommenderModel:
         places_with_rang = []
         weights = self.__repo.get_categories_weight_vector(use_common_weights)
 
-        # for w in weights.values():
-        #     if w < 0.1:
-        #         print("w = ", w)
-
         copied_weights = weights.copy()
         for category in soft_excluded_categories:
             copied_weights[category] -= 0.1
 
         i = 0
 
-        hard_c = set(hard_excluded_categories)
         for place in places:
-            # skip_place = False
             place_vector = set(place['categories'])
             if place_vector.intersection(hard_c):
                 continue
-            # for category in hard_excluded_categories:
-                # if place['vector'][category] != 0:
-                # if category in place['categories']:
-                #     skip_place = True
-                #     break
-            # if skip_place:
-            #     continue
 
             p_with_rang = place.copy()
 
@@ -205,24 +209,10 @@ class RouteRecommenderModel:
             w_vec = [copied_weights[c] for c in gen_categories 
                      if c in copied_weights]
 
-            # lst = [user_vector] + [place['categories']]
-
-            # with open("data_json/1_test/vec.json", "w", encoding='utf8') as data_file:
-            #     json.dump(lst, data_file, ensure_ascii=False)
-
             try:
                 p_with_rang['rang'] = 1 - distance.cosine(
                                             u_vec, p_vec, w_vec)
-                    # list(u_vec), list(p_vec), list(w_vec))
-                # place_with_rang['rang'] = distance.cosine(
-                #     list(user_vector.values()),
-                #     list(place['vector'].values()),
-                #     list(copied_weights.values())
-                # )
             except:
-                # print("user_vector count: " + str(len(list(user_vector.values()))))
-                # print("place vector count: " + str(len(list(place['vector'].values()))))
-                # print("copied_weights count: " + str(len(list(copied_weights.values()))))
                 print("user_vector count: " + str(len(u_vec)))
                 print("place vector count: " + str(len(p_vec)))
                 print("copied_weights count: " + str(len(w_vec)))
@@ -238,12 +228,6 @@ class RouteRecommenderModel:
             i += 1
 
         return sorted(places_with_rang, key=lambda p: p['rang'], reverse=True), None
-
-        # res = sorted(places_with_rang, key=lambda p: p['rang'])
-        # # for p in res:
-        # #     print(p['rang'])
-
-        # return res, None
 
 
     def __filter_places(self, places, start_place, start_time, end_time, lvl_saturation_stay):
@@ -279,8 +263,6 @@ class RouteRecommenderModel:
                     duration = durations[subway]
                     break
             
-            # p_vector = place['vector']
-            # p_categories = [key for key in p_vector if p_vector[key] == 1]
             p_categories = place['categories']
             times = [category['stay_time'] for category in categories
                      if category['name'] in p_categories]
@@ -296,7 +278,7 @@ class RouteRecommenderModel:
         return filtered_places, max_seconds, None
     
 
-    def __update_vector(self, user_id, included_categories, excluded_categories, use_prev_history):
+    def __update_vector(self, user_id, inc_c, hard_c, use_prev_history):
         old_set = set()
 
         req_categories, err = self.__repo.get_last_request(user_id)
@@ -304,7 +286,7 @@ class RouteRecommenderModel:
             return err
         elif not err:
             old_set = set(req_categories['included_categories']) - set(req_categories['hard_excluded_categories'])
-        u_set = old_set.union(set(included_categories)) - set(excluded_categories)
+        u_set = old_set.union(inc_c) - hard_c
 
         self.__repo.update_user_vector(user_id, list(u_set))
         return None
@@ -352,10 +334,12 @@ class RouteRecommenderModel:
             }
         )
 
+        places_count = len(places)
+
         while stack:
             node = stack.pop()
 
-            if node["idx"] == len(places):
+            if node["idx"] == places_count:
                 continue
 
             if len(routes) == limit:
@@ -378,12 +362,15 @@ class RouteRecommenderModel:
                 continue
 
             node["idx"] += 1
+            idx = node["idx"]
+
+            next_rang = places[idx]["rang"] if idx < places_count else 0
 
             stack.append(node)
             stack.append(
                 {
-                    "idx": node["idx"],
-                    "route": node["route"] + [(node["idx"], sum_rang + places[node["idx"]]["rang"])],
+                    "idx": idx,
+                    "route": node["route"] + [(idx, sum_rang + next_rang)],
                 }
             )
 
