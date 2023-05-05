@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Построение маршрута</title>
+    <link rel="stylesheet" href="../static/css/route-builder.css">
+    <script defer src="../static/js/consts.js"></script>
+    <script defer src="../static/js/route-builder.js"></script>
+</head>
+<body>
+
+<div id="main-form">
+    <h1 id="route-builder-header">Формирование маршрута</h1>
+
+    <div class="flex-container">
+        <div id="main-params">
+            <h3 id="main-params-h3">Основные параметры</h3>
+
+            <div class="dropdown-block">
+                <div id="include-categories-list" class="dropdown-list-categories" tabindex="10">
+                    <span class="anchor">Включенные категории</span>
+                    <ul class="items" id="include-items"></ul>
+                </div>
+            </div>
+            
+            <div class="dropdown-block">
+                <div id="hard-exclude-categories-list" class="dropdown-list-categories" tabindex="10">
+                    <span class="anchor">Исключенные категории</span>
+                    <ul class="items" id="hard-exclude-items"></ul>
+                </div>
+            </div>
+            
+            <div class="dropdown-block">
+                <div id="soft-exclude-categories-list" class="dropdown-list-categories" tabindex="10">
+                    <span class="anchor">Нежелательные категории</span>
+                    <ul class="items" id="soft-exclude-items"></ul>
+                </div>
+            </div>
+
+            <div class="some-block">
+                Выберите начальную точку
+                <input type="text" id="metro-station-input" class="input-field" name="metro" list="metro-station-name"/>
+                <datalist id="metro-station-name">
+                </datalist>
+            </div>
+
+            <div class="some-block">
+                Время начала маршрута
+                <form>
+                    <div class="fallbackTimePicker">
+                        <div>
+                            <span>
+                                <label for="start-hour">Часы:</label>
+                                <select id="start-hour" name="start-hour">
+            
+                                </select>
+                            </span>
+                            <span>
+                                <label for="start-minute">Минуты:</label>
+                                <select id="start-minute" name="start-minute">
+            
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="some-block">
+                Время окончания маршрута
+                <form>
+                    <div class="fallbackTimePicker">
+                        <div>
+                            <span>
+                                <label for="end-hour">Часы:</label>
+                                <select id="end-hour" name="end-hour">
+            
+                                </select>
+                            </span>
+                            <span>
+                                <label for="end-minute">Минуты:</label>
+                                <select id="end-minute" name="end-minute">
+            
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="some-block">
+                <input type="submit" value="Показать историю запросов" id="show-story-submit">
+            </div>
+            
+            <input type="submit" value="Сформировать маршрут" id="build-route-submit">
+
+        </div>
+
+        <div id="add-params">
+            <h3 id="add-params-h3">Дополнительные параметры</h3>
+
+            <div class="flags-block">
+                <div class="some-block">
+                    <input type="checkbox" id="use-prev-history"/>Использовать предыдущую историю
+                </div>
+                
+                <div class="some-block">
+                    <input type="checkbox" id="use-uncommon-weights"/>Показывать места из редких категорий
+                </div>
+                
+                <div class="some-block">
+                    <input type="checkbox" id="exclude-low-rang-routes"/>Отбрасывать места с низким рейтингом или без рейтинга
+                </div>
+            </div>
+
+
+            <div class="lvls-block">
+                <div class="lvl-block">
+                    Уровень активности отдыха
+                    <select class="select-field" id="lvl-activity">
+                        <option value="Не имеет значения">Не имеет значения</option>
+                        <option value="Низкий">Низкий</option>
+                        <option value="Средний">Средний</option>
+                        <option value="Высокий">Высокий</option>
+                    </select>
+                </div>
+
+                <div class="lvl-block">
+                    Уровень насыщенности пребывания
+                    <input type="range" class="input-range" min="0.5" max="1.5" step="0.5" list="saturationList" id="lvl-saturation-stay" onchange="document.getElementById('saturationLvlVal').innerHTML = this.value;"/>
+                    <datalist id="saturationList">
+                        <option value="0.5" label="Низкий">Низкий</option>
+                        <option value="1" label="Средний">Средний</option>
+                        <option value="1.5" label="Высокий">Высокий</option>
+                    </datalist>
+                    <span id="saturationLvlVal">1</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="tabs" id="route-tables">
+        <div class="some-block" id="route-table-list">
+        </div>
+        <div class="tabs__links" id="tabs_links">
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
