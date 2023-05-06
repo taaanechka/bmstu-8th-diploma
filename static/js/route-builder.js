@@ -254,10 +254,19 @@ buildRouteButton.addEventListener("click", (e) => {
             let tblBody = document.createElement("tbody");
             tblBody.className = "table-body-route";
             
-            let routeBold = document.createElement('h3');
+            let routeBoldDiv = document.createElement("div");
+            routeBoldDiv.id = "routeh3-" + tableIndex;
+            routeBoldDiv.className = "div-h3-route";
+            let routeBold = document.createElement("h3");
+            // // routeBold.innerHTML = "Маршрут №" + Number(tableIndex + 1).toString()
             let routeText = document.createTextNode("Маршрут №" + (Number(tableIndex) + Number(1)).toString());
             routeBold.appendChild(routeText);
-            tableDiv.appendChild(routeBold);
+            routeBoldDiv.appendChild(routeBold);
+            tableDiv.appendChild(routeBoldDiv);
+            // routeBoldDiv.appendChild(routeBold);
+
+            // routeBoldDiv.innerHTML = "<h3>" + "Маршрут №" + (Number(tableIndex) + Number(1)).toString() + "</h3>"
+            // tableDiv.appendChild(routeBoldDiv);
 
             let stepIndex = 1;
             route.forEach(function (route_step) {
@@ -276,7 +285,10 @@ buildRouteButton.addEventListener("click", (e) => {
               row.appendChild(cellStep);
 
               let cellTime = document.createElement("td");
+              // let preElem = document.createElement("pre");
               let cellTimeText = document.createTextNode(time);
+              // preElem.appendChild(cellTimeText);
+              // cellTime.appendChild(preElem);
               cellTime.appendChild(cellTimeText);
               row.appendChild(cellTime);
 
@@ -369,7 +381,7 @@ buildRouteButton.addEventListener("click", (e) => {
             routeTableList.appendChild(tableDiv);
             let a = document.createElement("a");
             a.href = "#" + tableDiv.id;
-            a.appendChild(routeText);
+            a.appendChild(routeText.cloneNode());
             tabs_links.appendChild(a);
             tableIndex += 1;
           });
