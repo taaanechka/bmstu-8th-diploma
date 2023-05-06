@@ -137,7 +137,7 @@ class RouteRecommenderRepository:
             weights_dict[weight['category']] = weight['weight']
         return weights_dict
 
-    def get_metro_stations(self):
+    def get_stations(self):
         db = self.__client['rs-route']
         return db.stations.find()
 
@@ -145,12 +145,6 @@ class RouteRecommenderRepository:
         db = self.__client['rs-route']
         categories = db.categories.find()
         res = [category for category in categories]
-        return res
-    
-    def get_categories_names(self):
-        db = self.__client['rs-route']
-        categories = db.categories.find()
-        res = [category['name'] for category in categories]
         return res
 
     def get_station(self, name):
@@ -165,17 +159,6 @@ class RouteRecommenderRepository:
     def get_request(self, rid):
         db = self.__client['rs-route']
         return db.requests.find_one({'_id': ObjectId(rid)})
-
-    def safe_root(self, rid, root):
-        db = self.__client['rs-route']
-        try:
-            db.requests.update_one(
-                {'_id': ObjectId(rid)},
-                {'$set': {'root': root}}
-            )
-            return True
-        except:
-            return False
 
     def safe_feedback(self, rid, feedback):
         db = self.__client['rs-route']

@@ -40,9 +40,8 @@ class RouteRecommenderController:
         self.__register = self.app.route('/api/register', methods=['POST'])(self.__register)
         self.__get_story = self.app.route('/api/story', methods=['GET'])(self.__get_story)
         self.__get_categories = self.app.route('/api/categories', methods=['GET'])(self.__get_categories)
-        self.__get_metro_stations = self.app.route('/api/metro', methods=['GET'])(self.__get_metro_stations)
+        self.__get_stations = self.app.route('/api/metro', methods=['GET'])(self.__get_stations)
         self.__get_recommended_route = self.app.route('/api/user/<string:user_id>/route/recommend', methods=['GET'])(self.__get_recommended_route)
-        # self.__get_next_batch_route = self.app.route('/api/user/<string:user_id>/route/next', methods=['GET'])(self.__get_next_batch_route)
         self.__safe_feedback = self.app.route('/api/user/<string:user_id>/route/feedback', methods=['POST'])(self.__safe_feedback)
 
     # Frontend
@@ -79,8 +78,8 @@ class RouteRecommenderController:
         user_id = request.args.get('id')
         return jsonify({"story": self.__model.get_story(user_id)}), 200
 
-    def __get_metro_stations(self):
-        return jsonify({"metro_stations": self.__model.get_metro_stations()}), 200
+    def __get_stations(self):
+        return jsonify({"metro_stations": self.__model.get_stations()}), 200
 
     def __get_categories(self):
         return jsonify({"categories": self.__model.get_categories()}), 200
@@ -127,11 +126,6 @@ class RouteRecommenderController:
                 'routes': data
             }
         ), 200
-
-    # def __get_next_batch_route(self, user_id):
-    #     rid = request.args.get('rid')
-    #     data = self.__model.build_next_batch_route(rid)
-    #     return jsonify({'routes': data}), 200
 
     def __safe_feedback(self, user_id):
         rid = request.args.get('rid')

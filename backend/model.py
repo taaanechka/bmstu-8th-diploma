@@ -30,8 +30,8 @@ class RouteRecommenderModel:
     def get_story(self, user_id):
         return self.__repo.get_story(user_id)
 
-    def get_metro_stations(self):
-        stations = self.__repo.get_metro_stations()
+    def get_stations(self):
+        stations = self.__repo.get_stations()
         station_names = [station['name'] for station in stations]
         return station_names
 
@@ -151,7 +151,7 @@ class RouteRecommenderModel:
             lvl_activity
     ):
         if len(included_categories) == 0 and not use_prev_history:
-            included_categories = self.__repo.get_categories_names()
+            included_categories = self.get_categories()
 
         hard_c = set(hard_excluded_categories)
         inc_c = set(included_categories)
@@ -321,7 +321,7 @@ class RouteRecommenderModel:
     def __build_route(self, places, start_place_name, start_time, max_seconds, exclude_low_rang_routes, limit=10):
         start_station = self.__repo.get_station(start_place_name)
         start_durations = start_station['duration']
-        stations = self.__repo.get_metro_stations()
+        stations = self.__repo.get_stations()
 
         routes = []
         sum_rang = 0
@@ -471,43 +471,53 @@ class RouteRecommenderModel:
             sec_to_next_place = matrix[permutation[i]][permutation[i + 1]]
             hours_to_next_place = sec_to_next_place // 3600
             min_to_next_place = (sec_to_next_place - hours_to_next_place * 3600) // 60
+
+            [prev_h, prev_m] = [next_h, next_m] if i != 0 else [int(elem) for elem in start_time.split(":")]
             
-            if i != 0:  # cur_place - место из маршрута
-                need_zero = ""
-                if next_m < 10:
-                    need_zero = "0"
-                prev_time_str = str(next_h) + ":" + need_zero + str(next_m)
+            # if i != 0:  # cur_place - место из маршрута
+            #     # need_zero = ""
+            #     # if next_m < 10:
+            #     #     need_zero = "0"
+            #     # prev_time_str = str(next_h) + ":" + str(next_m)
+            #     prev_h, prev_m = next_h, next_m
 
-                cur_h = next_h + hours_to_next_place + (next_m + min_to_next_place) // 60
-                cur_m = (next_m + min_to_next_place) % 60
-            else:       # cur_place -- начальная станция метро
-                prev_time_str = start_time
+            #     # cur_h = next_h + hours_to_next_place + (next_m + min_to_next_place) // 60
+            #     # cur_m = (next_m + min_to_next_place) % 60
+            # else:       # cur_place -- начальная станция метро
+            #     # prev_time_str = start_time
+            #     [prev_h, prev_m] = [int(elem) for elem in start_time.split(":")]
 
-                [prev_h, prev_min] = [int(elem) for elem in start_time.split(":")]
-                cur_h = prev_h + hours_to_next_place + (prev_min + min_to_next_place) // 60
-                cur_m = (prev_min + min_to_next_place) % 60
+            cur_h = prev_h + hours_to_next_place + (prev_m + min_to_next_place) // 60
+            cur_m = (prev_m + min_to_next_place) % 60
             
             full_m = cur_m + (next_place['stay_time']) // 60
             next_h = int(cur_h + full_m // 60)
             next_m = int(full_m % 60)
 
-            need_zero = ""
-            next_need_zero = ""
-            if cur_m < 10:
-                need_zero = "0"
-            if next_m < 10:
-                next_need_zero = "0"
+            h_t = [prev_h, cur_h, next_h]
+            h_zeros = [""] * len(h_t)
+            for i, el in enumerate(h_t):
+                if el < 10:
+                    h_zeros[i] = "0"
+
+            m_t = [prev_m, cur_m, next_m]
+            m_zeros = [""] * len(m_t)
+            for i, el in enumerate(m_t):
+                if el < 10:
+                    m_zeros[i] = "0"
 
             next_place_title = next_place['title']
 
             optimized_route += [
                 {
                     "step": cur_place_title + " → " + next_place_title,
-                    "time": prev_time_str + " — " + str(cur_h) + ":" + need_zero + str(cur_m)
+                    "time": h_zeros[0] + str(prev_h) + ":" + m_zeros[0] + str(prev_m) + "–" + 
+                            h_zeros[1] + str(cur_h) + ":" + m_zeros[1] + str(cur_m)
                 },
                 {
                     "step": next_place_title,
-                    "time": str(cur_h) + ":" + need_zero + str(cur_m) + " — " + str(next_h) + ":" + next_need_zero + str(next_m)
+                    "time": h_zeros[1] + str(cur_h) + ":" + m_zeros[1] + str(cur_m) + "–" + 
+                            h_zeros[2] + str(next_h) + ":" + m_zeros[2] + str(next_m)
                 }
             ]
 

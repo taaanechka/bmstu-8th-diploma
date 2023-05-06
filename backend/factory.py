@@ -8,7 +8,7 @@ class RouteRecommenderFactory:
     def __init__(self, config_file='./config/.env'):
         self.__config = config_file
 
-    def makeController(self):
+    def createController(self):
         repo = RouteRecommenderRepository(self.__config)
         token_manager = TokenManager(self.__config)
         model = RouteRecommenderModel(repo, token_manager)
