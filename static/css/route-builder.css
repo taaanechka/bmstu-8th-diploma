@@ -29,10 +29,12 @@ html {
   position: absolute;
   width: 100%;
   opacity: 0;
+  pointer-events: none;
 }
 
 .table-block:target {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .table-route {
@@ -220,39 +222,14 @@ html {
 .tabs__links>a {
   display: inline-block;
   text-decoration: none;
-  color: #1976d2;
   padding: 6px 10px;
   text-align: center;
+  border-radius: 0px 15px 0px 15px;
 }
 
-/* .tabs__links>div:target {
-  border: 1px solid #e3f2fd;
-  background-color:#008080;
+.act-route-link {
+  background-color:#32baba;
   color: white;
-} */
-
-/* .tabs__links>a:active {
-  background-color:#008080;
-  color: white;
-} */
-
-.tabs__links>a:hover {
-  background-color: rgba(227, 242, 253, 0.3);
-}
-
-
-.tabs>#route-0:target~.tabs__links>a[href="#route-0"],
-.tabs>#route-1:target~.tabs__links>a[href="#route-1"],
-.tabs>#route-2:target~.tabs__links>a[href="#route-2"],
-.tabs>#route-3:target~.tabs__links>a[href="#route-3"],
-.tabs>#route-4:target~.tabs__links>a[href="#route-4"],
-.tabs>#route-5:target~.tabs__links>a[href="#route-5"],
-.tabs>#route-6:target~.tabs__links>a[href="#route-6"],
-.tabs>#route-7:target~.tabs__links>a[href="#route-7"],
-.tabs>#route-8:target~.tabs__links>a[href="#route-8"],
-.tabs>#route-9:target~.tabs__links>a[href="#route-9"] {
-  background-color: #bbdefb;
-  cursor: default;
 }
 
 .tabs>div:not(.tabs__links) {
@@ -272,7 +249,7 @@ html {
   }
 
   .tabs__links>a {
-    border: 1px solid #e3f2fd;
+    border: 2px solid #e3f2fd;
     box-shadow: 0 2px 4px 0 #e3f2fd;
     margin-bottom: 8px;
   }

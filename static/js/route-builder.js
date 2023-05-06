@@ -219,6 +219,8 @@ function buildDropDownSelect(list, parent, id) {
   }
 }
 
+let tabs_links = document.getElementById("tabs_links");
+
 buildRouteButton.addEventListener("click", (e) => {
     e.preventDefault();
     clearTableList();
@@ -234,7 +236,6 @@ buildRouteButton.addEventListener("click", (e) => {
     request.open("GET", url, true);
     request.setRequestHeader("Authorization", "Bearer " + token);
 
-    let tabs_links = document.getElementById("tabs_links");
     tabs_links.innerHTML = null;
 
     request.onload = function () {
@@ -258,15 +259,10 @@ buildRouteButton.addEventListener("click", (e) => {
             routeBoldDiv.id = "routeh3-" + tableIndex;
             routeBoldDiv.className = "div-h3-route";
             let routeBold = document.createElement("h3");
-            // // routeBold.innerHTML = "Маршрут №" + Number(tableIndex + 1).toString()
             let routeText = document.createTextNode("Маршрут №" + (Number(tableIndex) + Number(1)).toString());
             routeBold.appendChild(routeText);
             routeBoldDiv.appendChild(routeBold);
             tableDiv.appendChild(routeBoldDiv);
-            // routeBoldDiv.appendChild(routeBold);
-
-            // routeBoldDiv.innerHTML = "<h3>" + "Маршрут №" + (Number(tableIndex) + Number(1)).toString() + "</h3>"
-            // tableDiv.appendChild(routeBoldDiv);
 
             let stepIndex = 1;
             route.forEach(function (route_step) {
@@ -285,10 +281,7 @@ buildRouteButton.addEventListener("click", (e) => {
               row.appendChild(cellStep);
 
               let cellTime = document.createElement("td");
-              // let preElem = document.createElement("pre");
               let cellTimeText = document.createTextNode(time);
-              // preElem.appendChild(cellTimeText);
-              // cellTime.appendChild(preElem);
               cellTime.appendChild(cellTimeText);
               row.appendChild(cellTime);
 
@@ -299,10 +292,10 @@ buildRouteButton.addEventListener("click", (e) => {
             tbl.setAttribute("border", "2");
             tableDiv.appendChild(tbl);
 
-            let bold = document.createElement('h3');
-            let reviewText = document.createTextNode("Пожалуйста, оставьте отзыв о предложенном маршруте");
-            bold.appendChild(reviewText);
-            tableDiv.appendChild(bold);
+            let reviewBoldDiv = document.createElement("div");
+            reviewBoldDiv.id = "reviewh3-" + tableIndex;
+            reviewBoldDiv.innerHTML = "<h3>" + "Пожалуйста, оставьте отзыв о предложенном маршруте" + "</h3>";
+            tableDiv.appendChild(reviewBoldDiv);
 
             let userTypeText = document.createTextNode("1. Выберите Ваш тип пользователя:");
             tableDiv.appendChild(userTypeText);
@@ -381,12 +374,31 @@ buildRouteButton.addEventListener("click", (e) => {
             routeTableList.appendChild(tableDiv);
             let a = document.createElement("a");
             a.href = "#" + tableDiv.id;
+            a.id = "route-link-" + tableDiv.id;
             a.appendChild(routeText.cloneNode());
+            // Подсвечивание фона ссылки на выбранный к просмотру маршрут
+            a.addEventListener('click', (e) => {
+              let url = e.target.href;
+              console.log("targetUrl: " + url);
+
+              let tabs_el = tabs_links.getElementsByTagName('a');
+              for (let i = 0; i < tabs_el.length; i++) {
+                  console.log(url + " | " + tabs_el[i].href);
+                  if (url == tabs_el[i].href) {
+                    tabs_el[i].className = "act-route-link";
+                    console.log("Success: " + tabs_el[i].href);
+                  }
+                  else {
+                    tabs_el[i].className = "";
+                  }
+                }
+            });
             tabs_links.appendChild(a);
             tableIndex += 1;
           });
         }
     }
+
     request.send();
 })
 
