@@ -220,10 +220,15 @@ function buildDropDownSelect(list, parent, id) {
 }
 
 let tabs_links = document.getElementById("tabs_links");
+let spinner = document.getElementById("spinner");
 
 buildRouteButton.addEventListener("click", (e) => {
     e.preventDefault();
     clearTableList();
+
+    buildRouteButton.disabled = true;
+    spinner.classList.remove('submit-spinner_hide');
+    console.log(buildRouteButton.disabled, spinner.classList);
 
     const request = new XMLHttpRequest();
     let user_id = getCookie("user_id");
@@ -357,9 +362,9 @@ buildRouteButton.addEventListener("click", (e) => {
             feedbackTextareaDiv.className = "some-block";
             let feedbackTextarea = document.createElement("textarea");
             feedbackTextarea.id = "feedback-" + tableIndex;
-            // feedbackTextarea.cols = 150;
-            // feedbackTextarea.rows = 5;
-            feedbackTextareaDiv.appendChild(document.createTextNode("5. Здесь Вы можете оставить развернутый отзыв о маршруте:"));
+            feedbackTextarea.cols = 130;
+            feedbackTextarea.rows = 5;
+            tableDiv.appendChild(document.createTextNode("5. Здесь Вы можете оставить развернутый отзыв о маршруте:"));
             feedbackTextareaDiv.appendChild(feedbackTextarea);
             tableDiv.appendChild(feedbackTextareaDiv);
 
@@ -379,11 +384,11 @@ buildRouteButton.addEventListener("click", (e) => {
             // Подсвечивание фона ссылки на выбранный к просмотру маршрут
             a.addEventListener('click', (e) => {
               let url = e.target.href;
-              console.log("targetUrl: " + url);
+              // console.log("targetUrl: " + url);
 
               let tabs_el = tabs_links.getElementsByTagName('a');
               for (let i = 0; i < tabs_el.length; i++) {
-                  console.log(url + " | " + tabs_el[i].href);
+                  // console.log(url + " | " + tabs_el[i].href);
                   if (url == tabs_el[i].href) {
                     tabs_el[i].className = "act-route-link";
                     console.log("Success: " + tabs_el[i].href);
@@ -397,6 +402,9 @@ buildRouteButton.addEventListener("click", (e) => {
             tableIndex += 1;
           });
         }
+
+        buildRouteButton.disabled = false;
+        spinner.classList.add('submit-spinner_hide');
     }
 
     request.send();

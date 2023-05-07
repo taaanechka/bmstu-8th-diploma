@@ -12,10 +12,9 @@ html {
   margin-bottom: 10px;
 }
 
-.some-block .textarea {
-  column-count: auto;
-  width: auto;
-}
+/* .some-block .textarea {
+  columns: 2 55;
+} */
 
 .review-block {
   margin-bottom: 20px;
@@ -130,6 +129,30 @@ html {
 }
 
 
+@keyframes spinner-border {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.submit-spinner {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  vertical-align: -0.125em;
+  border: 0.2em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  color: #ccc;
+  -webkit-animation: .75s linear infinite spinner-border;
+  animation: .75s linear infinite spinner-border;
+}
+
+.submit-spinner_hide {
+  display: none;
+}
+
+
 #show-story-submit {
   text-align: center;
   padding: 7px;
@@ -151,6 +174,17 @@ html {
   font-weight: bold;
   background-color: #008080;
   cursor: pointer;
+  outline: none;
+}
+
+#build-route-submit:disabled {
+  text-align: center;
+  padding: 7px;
+  border: none;
+  border-radius: 15px;
+  color: white;
+  background-color:darkslategray;
+  cursor: default;
   outline: none;
 }
 
