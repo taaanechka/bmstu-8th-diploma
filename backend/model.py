@@ -170,15 +170,12 @@ class RouteRecommenderModel:
         elif cur_month not in summer_months:
             hard_c = hard_c.union(summer_c - inc_c)
 
-        error = self.__update_vector(user_id, inc_c, hard_c, use_prev_history)
+        u_inc_c, error = self.__update_vector(user_id, inc_c, hard_c, use_prev_history)
         if error:
             return None, error
 
-        if use_prev_history:
-            user = self.__repo.get_user(user_id)
-            user_vector = set(user['categories'])
-        else:
-            user_vector = inc_c - hard_c
+        new_inc_c = u_inc_c if use_prev_history else inc_c
+        user_vector = new_inc_c - hard_c
 
         if lvl_activity != "Не имеет значения":
             places = self.__repo.get_places_by_lvl_activity(lvl_activity)
@@ -283,13 +280,14 @@ class RouteRecommenderModel:
 
         req_categories, err = self.__repo.get_last_request(user_id)
         if err and use_prev_history:
-            return err
+            return None, err
         elif not err:
             old_set = set(req_categories['included_categories']) - set(req_categories['hard_excluded_categories'])
-        u_set = old_set.union(inc_c) - hard_c
+        u_inc_c = old_set.union(inc_c)
+        u_set = u_inc_c - hard_c
 
         self.__repo.update_user_vector(user_id, list(u_set))
-        return None
+        return u_inc_c, None
 
 
     # def __update_vector(self, user_id, included_categories):
@@ -473,19 +471,6 @@ class RouteRecommenderModel:
             min_to_next_place = (sec_to_next_place - hours_to_next_place * 3600) // 60
 
             [prev_h, prev_m] = [next_h, next_m] if i != 0 else [int(elem) for elem in start_time.split(":")]
-            
-            # if i != 0:  # cur_place - место из маршрута
-            #     # need_zero = ""
-            #     # if next_m < 10:
-            #     #     need_zero = "0"
-            #     # prev_time_str = str(next_h) + ":" + str(next_m)
-            #     prev_h, prev_m = next_h, next_m
-
-            #     # cur_h = next_h + hours_to_next_place + (next_m + min_to_next_place) // 60
-            #     # cur_m = (next_m + min_to_next_place) % 60
-            # else:       # cur_place -- начальная станция метро
-            #     # prev_time_str = start_time
-            #     [prev_h, prev_m] = [int(elem) for elem in start_time.split(":")]
 
             cur_h = prev_h + hours_to_next_place + (prev_m + min_to_next_place) // 60
             cur_m = (prev_m + min_to_next_place) % 60

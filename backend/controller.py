@@ -36,13 +36,13 @@ class RouteRecommenderController:
         self.__route_builder_page = self.app.route('/route_builder', methods=['GET'])(self.__route_builder_page)
         self.__story_page = self.app.route('/story', methods=['GET'])(self.__story_page)
         # Backend
-        self.__login = self.app.route('/api/login', methods=['GET'])(self.__login)
-        self.__register = self.app.route('/api/register', methods=['POST'])(self.__register)
-        self.__get_story = self.app.route('/api/story', methods=['GET'])(self.__get_story)
-        self.__get_categories = self.app.route('/api/categories', methods=['GET'])(self.__get_categories)
-        self.__get_stations = self.app.route('/api/metro', methods=['GET'])(self.__get_stations)
-        self.__get_recommended_route = self.app.route('/api/user/<string:user_id>/route/recommend', methods=['GET'])(self.__get_recommended_route)
-        self.__safe_feedback = self.app.route('/api/user/<string:user_id>/route/feedback', methods=['POST'])(self.__safe_feedback)
+        self.__login = self.app.route('/api/v1/login', methods=['GET'])(self.__login)
+        self.__register = self.app.route('/api/v1/register', methods=['POST'])(self.__register)
+        self.__get_story = self.app.route('/api/v1/story', methods=['GET'])(self.__get_story)
+        self.__get_categories = self.app.route('/api/v1/categories', methods=['GET'])(self.__get_categories)
+        self.__get_stations = self.app.route('/api/v1/metro', methods=['GET'])(self.__get_stations)
+        self.__get_recommended_route = self.app.route('/api/v1/user/<string:user_id>/route/recommend', methods=['GET'])(self.__get_recommended_route)
+        self.__safe_feedback = self.app.route('/api/v1/user/<string:user_id>/route/feedback', methods=['POST'])(self.__safe_feedback)
 
     # Frontend
     def __login_page(self):
