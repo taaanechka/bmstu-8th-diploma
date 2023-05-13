@@ -8,7 +8,7 @@ loginButton.addEventListener("click", (e) => {
     const password = loginForm.password.value;
 
     const request = new XMLHttpRequest();
-    const url = "http://" + HOST + ":" + PORT + "/api/login?login=" + username + "&password=" + password;
+    const url = "http://" + HOST + ":" + PORT + "/api/v1/login?login=" + username + "&password=" + password;
     request.open("GET", url, true);
     request.responseType = "json";
 

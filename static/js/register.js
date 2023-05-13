@@ -8,7 +8,7 @@ registerButton.addEventListener("click", (e) => {
     const password = registerForm.password.value;
 
     const request = new XMLHttpRequest();
-    const url = "http://" + HOST + ":" + PORT + "/api/register" + "?login=" + username + "&password=" + password;
+    const url = "http://" + HOST + ":" + PORT + "/api/v1/register" + "?login=" + username + "&password=" + password;
     request.open("POST", url, true);
     request.responseType = "json";
 

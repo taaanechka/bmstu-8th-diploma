@@ -10,7 +10,7 @@ const getCookie = (name) => {
 function loadStory() {
   let user_id = getCookie("user_id");
   const request = new XMLHttpRequest();
-  const url = "http://" + HOST + ":" + PORT + "/api/story" + "?id=" + user_id;
+  const url = "http://" + HOST + ":" + PORT + "/api/v1/story" + "?id=" + user_id;
   request.open("GET", url, true);
   request.responseType = "json";
 

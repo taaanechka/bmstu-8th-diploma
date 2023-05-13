@@ -62,7 +62,7 @@ function populateEndMinutes() {
 
 function loadMetroStations() {
   const request = new XMLHttpRequest();
-  const url = "http://" + HOST + ":" + PORT + "/api/metro";
+  const url = "http://" + HOST + ":" + PORT + "/api/v1/metro";
   request.open("GET", url, true);
   request.responseType = "json";
 
@@ -85,7 +85,7 @@ function loadMetroStations() {
 
 function loadCategories() {
   const request = new XMLHttpRequest();
-  const url = "http://" + HOST + ":" + PORT + "/api/categories";
+  const url = "http://" + HOST + ":" + PORT + "/api/v1/categories";
   request.open("GET", url, true);
   request.responseType = "json";
 
@@ -235,7 +235,7 @@ buildRouteButton.addEventListener("click", (e) => {
     let token = getCookie("jwt_token");
     let params = buildParams();
     console.log(params);
-    const url = "http://" + HOST + ":" + PORT + "/api/user/" + user_id + "/route/recommend?" + params;
+    const url = "http://" + HOST + ":" + PORT + "/api/v1/user/" + user_id + "/route/recommend?" + params;
 
     request.responseType = "json";
     request.open("GET", url, true);
@@ -341,7 +341,8 @@ buildRouteButton.addEventListener("click", (e) => {
             let someNewCheckboxDiv = document.createElement("div");
             someNewCheckboxDiv.id = "some-new-div-" + tableIndex;
             let someNewCheckbox = document.createElement('input');
-            someNewCheckbox.type = "checkbox";
+            someNewCheckbox.type = "radio";
+            someNewCheckbox.name = "seen";
             someNewCheckbox.id = "some-new-" + tableIndex;
             someNewCheckboxDiv.appendChild(someNewCheckbox);
             someNewCheckboxDiv.appendChild(document.createTextNode("Да"));
@@ -351,7 +352,8 @@ buildRouteButton.addEventListener("click", (e) => {
             seenBeforeCheckboxDiv.id = "seen-before-div-" + tableIndex;
             seenBeforeCheckboxDiv.className = "some-block";
             let seenBeforeCheckbox = document.createElement('input');
-            seenBeforeCheckbox.type = "checkbox";
+            seenBeforeCheckbox.type = "radio";
+            seenBeforeCheckbox.name = "seen";
             seenBeforeCheckbox.id = "seen-before-" + tableIndex;
             seenBeforeCheckboxDiv.appendChild(seenBeforeCheckbox);
             seenBeforeCheckboxDiv.appendChild(document.createTextNode("Нет, мной посещены все места из маршрута"));
@@ -429,7 +431,7 @@ function sendFeedback(e) {
   const request = new XMLHttpRequest();
   let user_id = getCookie("user_id");
   let rid = getCookie("rid");
-  const url = "http://" + HOST + ":" + PORT + "/api/user/" + user_id + "/route/feedback?rid=" + rid;
+  const url = "http://" + HOST + ":" + PORT + "/api/v1/user/" + user_id + "/route/feedback?rid=" + rid;
 
   const feedbackData = {
     "feedback": {
