@@ -48,6 +48,7 @@ function populateEndHours() {
   for(let i = 8; i <= 22; i++) {
     let option = document.createElement('option');
     option.textContent = i;
+    if (i == 11) option.selected = true;
     endHourSelect.appendChild(option);
   }
 }
@@ -71,7 +72,7 @@ function loadMetroStations() {
       console.log("Some error while getting metro stations")
       console.log(request.response)
     } else {
-      let metroStations = request.response.metro_stations
+      let metroStations = request.response.metro_stations.sort()
       metroStations.forEach(function (station) {
         let option = document.createElement('option');
         option.textContent = station;
@@ -95,16 +96,22 @@ function loadCategories() {
       console.log(request.response);
     } else {
       let categories = request.response.categories.sort()
+      let items = [includeItems, softExcludeItems, hardExcludeItems];
+      let j = 0;
       categories.forEach(function (category) {
-        let items = [includeItems, softExcludeItems, hardExcludeItems];
         for (let i = 0; i < items.length; i++) {
           let li = document.createElement('li');
           let inputCheckbox = document.createElement('input');
           inputCheckbox.type = "checkbox";
+          inputCheckbox.id = "ul-" + i + "-li-" + j;
+          let label = document.createElement('label');
+          label.setAttribute('for', inputCheckbox.id);
+          label.appendChild(document.createTextNode(category));
 
           li.appendChild(inputCheckbox);
-          li.appendChild(document.createTextNode(category));
+          li.appendChild(label);
           items[i].appendChild(li);
+          j++;
         }
       });
     }
