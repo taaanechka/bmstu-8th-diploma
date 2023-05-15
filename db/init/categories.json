@@ -1,0 +1,1052 @@
+[
+    {
+        "slug": "amusement",
+        "name": "Развлечения",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "slug": "anticafe",
+        "name": "Антикафе",
+        "stay_time": 3600,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "art-centers",
+        "name": "Арт-центры",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "art-space",
+        "name": "Арт-пространства",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "attractions",
+        "name": "Достопримечательности",
+        "stay_time": 1500,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "bridge",
+        "name": "Мосты",
+        "stay_time": 1200,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "church",
+        "name": "Церкви",
+        "stay_time": 1500,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "cinema",
+        "name": "Кинотеатры",
+        "stay_time": 7200,
+        "lvl_activity": [
+            "Низкий"
+        ]
+    },
+    {
+        "slug": "clubs",
+        "name": "Клубы",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "concert-hall",
+        "name": "Концертные залы",
+        "stay_time": 5400,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "culture",
+        "name": "Дома культуры",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "fountain",
+        "name": "Фонтаны",
+        "stay_time": 1200,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "homesteads",
+        "name": "Усадьбы",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "kids",
+        "name": "Детям",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "slug": "library",
+        "name": "Библиотеки",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Низкий"
+        ]
+    },
+    {
+        "slug": "metro",
+        "name": "Метро",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "monastery",
+        "name": "Монастыри",
+        "stay_time": 1200,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "museums",
+        "name": "Музеи и галереи",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "palace",
+        "name": "Дворцы",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "park",
+        "name": "Парки и сады",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Низкий",
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "slug": "photo-places",
+        "name": "Фотоместа (Фотография)",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "slug": "recreation",
+        "name": "Отдых",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "slug": "station",
+        "name": "Вокзалы",
+        "stay_time": 1200,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "suburb",
+        "name": "Загородный отдых",
+        "stay_time": 3000,
+        "lvl_activity": [
+            "Низкий",
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "slug": "temple",
+        "name": "Храмы",
+        "stay_time": 1200,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "slug": "theatre",
+        "name": "Театры",
+        "stay_time": 7200,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Выставочные пространства",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Кинопоказы",
+        "stay_time": 7200,
+        "lvl_activity": [
+            "Низкий"
+        ]
+    },
+    {
+        "name": "Культура и искусство",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Куклы",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Страшилки",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Картинг",
+        "stay_time": 3600,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "С друзьями",
+        "stay_time": 3600,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Семейные развлечения",
+        "stay_time": 3600,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Виртуальная реальность",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Лазертаг",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Детские развлекательные центры",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Парки аттракционов",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Места для свиданий",
+        "stay_time": 3600,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Ретро",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Необычные кафе",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Животные и птицы",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Романтичные места и события",
+        "stay_time": 3600,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Открытые катки",
+        "stay_time": 3600,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Активный зимний отдых",
+        "stay_time": 3600,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Катки",
+        "stay_time": 3600,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Игры",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Плавание",
+        "stay_time": 3000,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Бассейны",
+        "stay_time": 3000,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Спорт",
+        "stay_time": 3000,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Пейнтбол",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Боулинг",
+        "stay_time": 3600,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Музеи для детей",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Фотосессия",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Аквапарки",
+        "stay_time": 3000,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Наука",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Современное искусство",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Книги",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий"
+        ]
+    },
+    {
+        "name": "Тиры, стрельба",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Вднх",
+        "stay_time": 1500,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Летние развлечения",
+        "stay_time": 3000,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "История",
+        "stay_time": 1500,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Караоке",
+        "stay_time": 3000,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Космос",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Театральные площадки",
+        "stay_time": 3000,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Булгаков",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Чарли чаплин",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Бильярд",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Архитектура",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Кремль",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Творчество",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Детские театры",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Необычные дома",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Городские прогулки",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Быт",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Мастер и маргарита",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Ссср",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий"
+        ]
+    },
+    {
+        "name": "Живописные места",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Белки",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Спорт для детей",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Зоопарки",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Природа",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Органная музыка",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Низкий"
+        ]
+    },
+    {
+        "name": "Готика",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Настольные игры",
+        "stay_time": 3000,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Набережные",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Памятники",
+        "stay_time": 1200,
+        "lvl_activity": [
+            "Низкий"
+        ]
+    },
+    {
+        "name": "Экстремальный спорт",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Горные лыжи",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Катание на лыжах",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Катание на ватрушках",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Сноуборд",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Зимние развлечения",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Батут",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Веревочные парки",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Пробежки",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Пикник",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Места съемок",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Площади",
+        "stay_time": 1500,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Горки",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Конные прогулки",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Религиозная культура",
+        "stay_time": 1200,
+        "lvl_activity": [
+            "Низкий"
+        ]
+    },
+    {
+        "name": "Детские площадки",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Серебряный век",
+        "stay_time": 1500,
+        "lvl_activity": [
+            "Низкий"
+        ]
+    },
+    {
+        "name": "Крытые катки",
+        "stay_time": 3600,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Высоцкий",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Кошки",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Современная драматургия",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Настольный теннис",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Пушкин",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Конструктивизм",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Дворы",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Стрит-арт",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Иконы",
+        "stay_time": 1500,
+        "lvl_activity": [
+            "Низкий"
+        ]
+    },
+    {
+        "name": "Пастернак",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Заброшенные места",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Петр первый",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Народное творчество",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий"
+        ]
+    },
+    {
+        "name": "Барокко",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Ленин",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Пляжи",
+        "stay_time": 3000,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Модерн",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Лев толстой",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Улицы",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Зураб церетели",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Романовы",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Граффити",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Велосипеды",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Кинотеатры под открытым небом",
+        "stay_time": 5400,
+        "lvl_activity": [
+            "Низкий",
+            "Средний"
+        ]
+    },
+    {
+        "name": "Солженицын",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Сергей есенин",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Прокат лодок и катеров",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний",
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Чехов",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Аэротруба",
+        "stay_time": 2400,
+        "lvl_activity": [
+            "Высокий"
+        ]
+    },
+    {
+        "name": "Великая отечественная война",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Гагарин",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    },
+    {
+        "name": "Экзотика",
+        "stay_time": 1800,
+        "lvl_activity": [
+            "Средний"
+        ]
+    }
+]
