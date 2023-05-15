@@ -12,9 +12,6 @@ html {
   margin-bottom: 10px;
 }
 
-/* .some-block .textarea {
-  columns: 2 55;
-} */
 
 .review-block {
   margin-bottom: 20px;
@@ -154,6 +151,7 @@ html {
 
 
 #show-story-submit {
+  width: 210px;
   text-align: center;
   padding: 7px;
   border: none;
@@ -166,6 +164,7 @@ html {
 }
 
 #build-route-submit {
+  width: 210px;
   text-align: center;
   padding: 7px;
   border: none;
@@ -204,21 +203,43 @@ html {
   border-radius: 25px 0px 25px 0px;
 }
 
-#main-params {
-  float: left;
-  width: 500px;
-  margin: 0;
-}
-
-#add-params {
-  width: 500px;
-  margin: 0;
-}
-
 
 .flex-container {
   display: flex;
   margin: 20px;
+  flex-direction: row;
+}
+
+#main-params {
+  display: flex;
+  flex-direction: column;
+}
+
+.time-h-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.time-input {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+
+.time-input-col {
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+}
+
+.time-input-col-left {
+  display: flex;
+  flex-direction: column;
+  padding-right: 20px;
+}
+
+.time-input-row-val {
+  display: flex;
   flex-direction: row;
 }
 

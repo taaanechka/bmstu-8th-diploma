@@ -104,12 +104,12 @@ function loadCategories() {
           let inputCheckbox = document.createElement('input');
           inputCheckbox.type = "checkbox";
           inputCheckbox.id = "ul-" + i + "-li-" + j;
-          let label = document.createElement('label');
-          label.setAttribute('for', inputCheckbox.id);
-          label.appendChild(document.createTextNode(category));
+          let label_c = document.createElement('label');
+          label_c.setAttribute('for', inputCheckbox.id);
+          label_c.appendChild(document.createTextNode(category));
 
           li.appendChild(inputCheckbox);
-          li.appendChild(label);
+          li.appendChild(label_c);
           items[i].appendChild(li);
           j++;
         }
@@ -343,7 +343,7 @@ buildRouteButton.addEventListener("click", (e) => {
                 "general-" + tableIndex
             );
 
-            let someoneNewText = document.createTextNode("4. Нашли ли Вы для себя в маршруте что-то новое?");
+            let someoneNewText = document.createTextNode("4. Каких мест в маршруте больше: новых или знакомых?");
             tableDiv.appendChild(someoneNewText);
             let someNewCheckboxDiv = document.createElement("div");
             someNewCheckboxDiv.id = "some-new-div-" + tableIndex;
@@ -351,8 +351,11 @@ buildRouteButton.addEventListener("click", (e) => {
             someNewCheckbox.type = "radio";
             someNewCheckbox.name = "seen";
             someNewCheckbox.id = "some-new-" + tableIndex;
+            let label_new = document.createElement('label');
+            label_new.setAttribute('for', someNewCheckbox.id);
+            label_new.appendChild(document.createTextNode("Новых мест не меньше чем знакомых"));
             someNewCheckboxDiv.appendChild(someNewCheckbox);
-            someNewCheckboxDiv.appendChild(document.createTextNode("Да"));
+            someNewCheckboxDiv.appendChild(label_new);
             tableDiv.appendChild(someNewCheckboxDiv);
 
             let seenBeforeCheckboxDiv = document.createElement("div");
@@ -362,9 +365,12 @@ buildRouteButton.addEventListener("click", (e) => {
             seenBeforeCheckbox.type = "radio";
             seenBeforeCheckbox.name = "seen";
             seenBeforeCheckbox.id = "seen-before-" + tableIndex;
+            let label_old = document.createElement('label');
+            label_old.setAttribute('for', seenBeforeCheckbox.id);
+            label_old.appendChild(document.createTextNode("Знакомых мест больше"));
             seenBeforeCheckboxDiv.appendChild(seenBeforeCheckbox);
-            seenBeforeCheckboxDiv.appendChild(document.createTextNode("Нет, мной посещены все места из маршрута"));
-            tableDiv.appendChild(seenBeforeCheckboxDiv)
+            seenBeforeCheckboxDiv.appendChild(label_old);
+            tableDiv.appendChild(seenBeforeCheckboxDiv);
 
             let feedbackTextareaDiv = document.createElement("div");
             feedbackTextareaDiv.id = "feedback-div-" + tableIndex;
@@ -449,8 +455,7 @@ function sendFeedback(e) {
       "user_type": document.getElementById("user-type-" + index).value,
       "overall": document.getElementById("overall-" + index).value,
       "general": document.getElementById("general-" + index).value,
-      "some_new": document.getElementById("some-new-" + index).checked,
-      "seen_before": document.getElementById("seen-before-" + index).checked,
+      "new_greater": document.getElementById("seen-before-" + index).checked ? false : true,
       "feedback": document.getElementById("feedback-" + index).value
     }
   };

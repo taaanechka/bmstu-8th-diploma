@@ -44,55 +44,52 @@
                 </datalist>
             </div>
 
-            <div class="some-block">
-                Время начала маршрута
-                <form>
-                    <div class="fallbackTimePicker">
-                        <div>
+            <div class="time-h-input">
+                Выберите время прохождения маршрута
+                <div class="time-input">
+                    <div class="time-input-col-left">
+                        <span>начало:</span>
+                        <span>конец: </span>
+                    </div>
+                    <div class="time-input-row-val">
+                        <div class="time-input-col">
                             <span>
-                                <label for="start-hour">Часы:</label>
+                                <label for="start-hour">ч</label>
                                 <select id="start-hour" name="start-hour">
-            
                                 </select>
                             </span>
                             <span>
-                                <label for="start-minute">Минуты:</label>
-                                <select id="start-minute" name="start-minute">
-            
-                                </select>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            
-            <div class="some-block">
-                Время окончания маршрута
-                <form>
-                    <div class="fallbackTimePicker">
-                        <div>
-                            <span>
-                                <label for="end-hour">Часы:</label>
+                                <label for="end-hour">ч</label>
                                 <select id="end-hour" name="end-hour">
-            
+                                </select>
+                            </span>
+                        </div>
+                        <div class="time-input-col">
+                            <span>
+                                <label for="start-minute">м</label>
+                                <select id="start-minute" name="start-minute">
                                 </select>
                             </span>
                             <span>
-                                <label for="end-minute">Минуты:</label>
+                                <label for="end-minute">м</label>
                                 <select id="end-minute" name="end-minute">
-            
                                 </select>
                             </span>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
 
             <div class="some-block">
                 <input type="submit" value="Показать историю запросов" id="show-story-submit">
             </div>
 
-            <button type="submit" id="build-route-submit"><span class="submit-spinner submit-spinner_hide" id="spinner"></span> Сформировать маршрут</button>
+            <div class="some-block">
+                <button type="submit" id="build-route-submit">
+                    <span class="submit-spinner submit-spinner_hide" id="spinner"></span> 
+                    Сформировать маршрут
+                </button>
+            </div>
         </div>
 
         <div id="add-params">
@@ -106,7 +103,7 @@
                 
                 <div class="some-block">
                     <input type="checkbox" id="use-uncommon-weights"/>
-                    <label for="use-uncommon-weights">Включить приоритет мест из редких категорий</label>
+                    <label for="use-uncommon-weights">Повысить приоритет мест из редких категорий</label>
                 </div>
                 
                 <div class="some-block">
