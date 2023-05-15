@@ -109,12 +109,20 @@ class RouteRecommenderRepository:
         if len(u_reqs) == 0:
             return None, "Отсутствует история запросов пользователя"
         
-        req = u_reqs[0]
+        found_i = -1
+
+        for i in range(len(u_reqs)):
+            if len(u_reqs[i]['included_categories']) != 0:
+                found_i = i
+                break
+        
+        found_i = found_i if (found_i != -1) else 0
+        req = u_reqs[found_i]
         res = {
-            'included_categories': req['included_categories'],
-            'soft_excluded_categories': req['soft_excluded_categories'],
-            'hard_excluded_categories': req['hard_excluded_categories']
-        }
+                'included_categories': req['included_categories'],
+                'soft_excluded_categories': req['soft_excluded_categories'],
+                'hard_excluded_categories': req['hard_excluded_categories']
+            }
         return res, None
 
     def update_user_vector(self, user_id, new_vector):
