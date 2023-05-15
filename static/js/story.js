@@ -31,6 +31,7 @@ function loadStory() {
         let tblBody = document.createElement("tbody");
         tblBody.className = "table-body-route";
 
+        // Заголовок с номером запроса
         let routeBoldDiv = document.createElement("div");
         routeBoldDiv.id = "reqh4-" + storyIndex;
         routeBoldDiv.className = "div-h4-req";
@@ -39,20 +40,14 @@ function loadStory() {
         routeBold.appendChild(routeText);
         routeBoldDiv.appendChild(routeBold);
         tableDiv.appendChild(routeBoldDiv);
-        // storyListDivBlock.appendChild(document.createTextNode(storyIndex + "."));
 
+        // Включенные категории
         let incCategories = "";
-        // let incCategoriesDiv = document.createElement("div");
-        // incCategoriesDiv.id = "included-categories-div-" + storyIndex;
-        // incCategoriesDiv.className = "some-block";
         let incN = story_item.included_categories.length;
         story_item.included_categories.forEach(function (category) {
           incCategories += category + ", ";
         });
-        incCategories = incCategories.substring(0, incCategories.length - 2); // : "все категории";
-        
-        // incCategoriesDiv.appendChild(document.createTextNode("Включенные категории: " + incCategories));
-        // storyListDivBlock.appendChild(incCategoriesDiv);
+        incCategories = incCategories.substring(0, incCategories.length - 2); 
         let rowInc = document.createElement("tr");
         let cellIncName = document.createElement("td");
         cellIncName.appendChild(document.createTextNode("Включенные категории"));
@@ -62,16 +57,12 @@ function loadStory() {
         rowInc.appendChild(cellInc);
         tblBody.appendChild(rowInc);
 
+        // Исключенные категории
         let hardExCategories = "";
-        // let hardExCategoriesDiv = document.createElement("div");
-        // hardExCategoriesDiv.id = "hard-excluded-categories-div-" + storyIndex;
-        // hardExCategoriesDiv.className = "some-block";
         story_item.hard_excluded_categories.forEach(function (category) {
           hardExCategories += category + ", ";
         });
         hardExCategories = hardExCategories.substring(0, hardExCategories.length - 2);
-        // hardExCategoriesDiv.appendChild(document.createTextNode("Исключенные категории: " + hardExCategories));
-        // storyListDivBlock.appendChild(hardExCategoriesDiv);
         let rowExHard = document.createElement("tr");
         let cellExHardName = document.createElement("td");
         cellExHardName.appendChild(document.createTextNode("Исключенные категории"));
@@ -81,16 +72,12 @@ function loadStory() {
         rowExHard.appendChild(cellExHard);
         tblBody.appendChild(rowExHard);
 
+        // Нежелательные категории
         let softExCategories = "";
-        // let softExCategoriesDiv = document.createElement("div");
-        // softExCategoriesDiv.id = "soft-excluded-categories-div-" + storyIndex;
-        // softExCategoriesDiv.className = "some-block";
         story_item.soft_excluded_categories.forEach(function (category) {
           softExCategories += category + ", ";
         });
         softExCategories = softExCategories.substring(0, softExCategories.length - 2);
-        // softExCategoriesDiv.appendChild(document.createTextNode("Нежелательные категории: " + softExCategories));
-        // storyListDivBlock.appendChild(softExCategoriesDiv);
         let rowExSoft = document.createElement("tr");
         let cellExSoftName = document.createElement("td");
         cellExSoftName.appendChild(document.createTextNode("Нежелательные категории"));
@@ -100,11 +87,7 @@ function loadStory() {
         rowExSoft.appendChild(cellExSoft);
         tblBody.appendChild(rowExSoft);
 
-        // let startPointDiv = document.createElement("div");
-        // startPointDiv.id = "start-point-div-" + storyIndex;
-        // startPointDiv.className = "some-block";
-        // startPointDiv.appendChild(document.createTextNode("Начальная точка: " + story_item.start_point));
-        // storyListDivBlock.appendChild(startPointDiv);
+        // Начальная точка
         let rowStartPoint = document.createElement("tr");
         let cellStartPointName = document.createElement("td");
         cellStartPointName.appendChild(document.createTextNode("Начальная точка"));
@@ -114,18 +97,8 @@ function loadStory() {
         rowStartPoint.appendChild(cellStartPoint);
         tblBody.appendChild(rowStartPoint);
 
-        // let usePrevHistoryDiv = document.createElement("div");
-        // usePrevHistoryDiv.id = "use-prev-history-div-" + storyIndex;
-        // usePrevHistoryDiv.className = "some-block";
+        // Флаг использования предыдущей истории
         let prev_hist_val = story_item.use_prev_history ? "да" : "нет";
-        // if (story_item.use_prev_history) {
-        //   prev_hist_val += "да"
-        //   // usePrevHistoryDiv.appendChild(document.createTextNode("Использовать предыдущую историю: да"));
-        // } else {
-        //   prev_hist_val += "нет"
-        //   // usePrevHistoryDiv.appendChild(document.createTextNode("Использовать предыдущую историю: нет"));
-        // }
-        // storyListDivBlock.appendChild(usePrevHistoryDiv);
         let rowPrevHist = document.createElement("tr");
         let cellPrevHistName = document.createElement("td");
         cellPrevHistName.appendChild(document.createTextNode("Использовать предыдущую историю"));
@@ -135,16 +108,8 @@ function loadStory() {
         rowPrevHist.appendChild(cellPrevHist);
         tblBody.appendChild(rowPrevHist);
 
-        // let useUncommonWeightsDiv = document.createElement("div");
-        // useUncommonWeightsDiv.id = "use-uncommon-weights-div-" + storyIndex;
-        // useUncommonWeightsDiv.className = "some-block";
+        // Флаг использования весов для редких категорий
         let uncom_w_val = story_item.use_common_weights ? "нет" : "да";
-        // if (story_item.use_common_weights) {
-        //   useUncommonWeightsDiv.appendChild(document.createTextNode("Повысить приоритет мест из редких категорий: нет"));
-        // } else {
-        //   useUncommonWeightsDiv.appendChild(document.createTextNode("Повысить приоритет мест из редких категорий: да"));
-        // }
-        // storyListDivBlock.appendChild(useUncommonWeightsDiv);
         let rowUncommonWeights = document.createElement("tr");
         let cellUncommonWeightsName = document.createElement("td");
         cellUncommonWeightsName.appendChild(document.createTextNode("Повысить приоритет мест из редких категорий"));
@@ -154,16 +119,8 @@ function loadStory() {
         rowUncommonWeights.appendChild(cellUncommonWeights);
         tblBody.appendChild(rowUncommonWeights);
 
-        // let excludeLowRangRoutesDiv = document.createElement("div");
-        // excludeLowRangRoutesDiv.id = "exclude-low-rang-routes-div-" + storyIndex;
-        // excludeLowRangRoutesDiv.className = "some-block";
+        // Флаг исключения объектов с низким рейтингом
         let ex_low_rang = story_item.exclude_low_rang_routes ? "да" : "нет";
-        // if (story_item.exclude_low_rang_routes) {
-        //   excludeLowRangRoutesDiv.appendChild(document.createTextNode("Исключить места с низким рейтингом (без рейтинга): да"));
-        // } else {
-        //   excludeLowRangRoutesDiv.appendChild(document.createTextNode("Исключить места с низким рейтингом (без рейтинга): нет"));
-        // }
-        // storyListDivBlock.appendChild(excludeLowRangRoutesDiv);
         let rowExLowRang = document.createElement("tr");
         let cellExLowRangName = document.createElement("td");
         cellExLowRangName.appendChild(document.createTextNode("Исключить места с низким рейтингом (без рейтинга)"));
@@ -172,6 +129,26 @@ function loadStory() {
         cellExLowRang.appendChild(document.createTextNode(ex_low_rang));
         rowExLowRang.appendChild(cellExLowRang);
         tblBody.appendChild(rowExLowRang);
+
+        // Уровень активности отдыха
+        let rowLvlActivity = document.createElement("tr");
+        let cellLvlActivityName = document.createElement("td");
+        cellLvlActivityName.appendChild(document.createTextNode("Уровень активности отдыха"));
+        rowLvlActivity.appendChild(cellLvlActivityName);
+        let cellLvlActivity = document.createElement("td");
+        cellLvlActivity.appendChild(document.createTextNode(story_item.lvl_activity));
+        rowLvlActivity.appendChild(cellLvlActivity);
+        tblBody.appendChild(rowLvlActivity);
+
+        // Уровень насыщенности пребывания
+        let rowLvlSaruration = document.createElement("tr");
+        let cellLvlSarurationName = document.createElement("td");
+        cellLvlSarurationName.appendChild(document.createTextNode("Уровень насыщенности пребывания"));
+        rowLvlSaruration.appendChild(cellLvlSarurationName);
+        let cellLvlSaruration = document.createElement("td");
+        cellLvlSaruration.appendChild(document.createTextNode(story_item.lvl_saturation_stay));
+        rowLvlSaruration.appendChild(cellLvlSaruration);
+        tblBody.appendChild(rowLvlSaruration);
 
         tbl.appendChild(tblBody);
         tbl.setAttribute("border", "2");
