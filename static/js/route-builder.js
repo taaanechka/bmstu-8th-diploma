@@ -285,7 +285,7 @@ buildRouteButton.addEventListener("click", (e) => {
               let cellRowIndex = document.createElement("td");
               let cellRowIndexText = document.createTextNode(stepIndex);
               cellRowIndex.appendChild(cellRowIndexText);
-              row.appendChild(cellRowIndexText);
+              row.appendChild(cellRowIndex);
 
               let cellStep = document.createElement("td");
               let cellStepText = document.createTextNode(step);
