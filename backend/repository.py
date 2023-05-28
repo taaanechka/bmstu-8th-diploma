@@ -58,12 +58,21 @@ class RouteRecommenderRepository:
     
     def get_places_by_lvl_activity(self, lvl_activity):
         db = self.__client['rs-route']
-        categories = db.categories.find({"lvl_activity": lvl_activity})
-        names = [category['name'] for category in categories]
+        categories = [c['name'] for c in db.categories.find({"lvl_activity": lvl_activity})]
+        exclude = []
+        if lvl_activity == "Высокий":
+            exclude = [c['name'] for c in db.categories.find(
+                {"lvl_activity": "Низкий", "lvl_activity": {"$ne": "Высокий"}})]
+        elif lvl_activity == "Низкий":
+            exclude = [c['name'] for c in db.categories.find(
+                {"lvl_activity": "Высокий", "lvl_activity": {"$ne": "Низкий"}})]
+        
         places = self.get_all_places()
 
-        res_places = [place for place in places if set(place['categories']).intersection(set(names))]
-        print("len filtered_places: ", len(res_places))
+        res_places = [place for place in places 
+                      if (set(place['categories']).intersection(set(categories)) and
+                          not set(place['categories']).intersection(set(exclude)))]
+        # print("len filtered_places: ", len(res_places))
 
         return res_places
 

@@ -63,6 +63,11 @@ class RouteRecommenderModel:
         error = self.__token_manager.verify_token(token, user_id)
         if error is not None:
             return None, None, error
+        
+        max_seconds = self.__get_max_seconds(start_time, end_time)
+        if max_seconds <= 1800:
+            return None, None, "По заданному промежутку времени невозможно сформировать маршрут"
+        
         recommended_places, error = self.__get_recommended_places(
             user_id,
             included_categories,
@@ -75,13 +80,18 @@ class RouteRecommenderModel:
         )
         if error is not None:
             return None, None, error
+        
 
-        filtered_places, max_seconds, error = self.__filter_places(recommended_places, start_point, start_time, end_time, lvl_saturation_stay)
+        filtered_places, max_seconds, error = self.__filter_places(recommended_places, start_point, max_seconds, lvl_saturation_stay)
         if error is not None:
             return None, None, error
-        if not filtered_places or max_seconds <= 1800:
+        if not filtered_places:
             return None, None, "По заданному промежутку времени и категориям невозможно сформировать маршрут"
         routes = self.__build_route(filtered_places, start_point, start_time, max_seconds, exclude_low_rang_routes)
+
+        # print("len routes: ", len(routes))
+        if len(routes) == 0:
+            return None, None, "По заданному промежутку времени и выбранным опциям невозможно сформировать маршрут"
 
         rid = self.__safe_request(
             user_id,
@@ -159,7 +169,7 @@ class RouteRecommenderModel:
         inc_c = set(included_categories)
 
         winter_months = [12, 1, 2]
-        summer_months = [6, 7, 8]
+        summer_months = [5, 6, 7, 8]
 
         winter_c = set(["Зимние развлечения", "Активный зимний отдых", "Открытые катки", "Катки",
                         "Горные лыжи", "Катание на лыжах", "Катание на ватрушках", "Сноуборд"])
@@ -169,8 +179,10 @@ class RouteRecommenderModel:
         cur_month = datetime.now().month
         if cur_month not in winter_months:
             hard_c = hard_c.union(winter_c - inc_c)
-        elif cur_month not in summer_months:
+        if cur_month not in summer_months:
             hard_c = hard_c.union(summer_c - inc_c)
+
+        # print(hard_c)
 
         u_inc_c, error = self.__update_vector(user_id, inc_c, hard_c, use_prev_history)
         if error:
@@ -229,19 +241,12 @@ class RouteRecommenderModel:
                 places_with_rang.append(p_with_rang)
             # i += 1
 
+        print("len places: ", len(places_with_rang))
+
         return sorted(places_with_rang, key=lambda p: p['rang'], reverse=True), None
+    
 
-
-    def __filter_places(self, places, start_place, start_time, end_time, lvl_saturation_stay):
-        start_station = self.__repo.get_station(start_place)
-        if start_station is None:
-            return None, None, "Отсутствует начальная точка маршрута"
-        durations = start_station['duration']
-
-        categories = self.__repo.get_categories()
-
-        t_dest_from_station_to_place = 15 * 60       # 15 минут
-
+    def __get_max_seconds(self, start_time, end_time):
         start = start_time.split(':')
         end = end_time.split(':')
         minutes = 0
@@ -253,8 +258,17 @@ class RouteRecommenderModel:
             minutes = int(end[1]) - int(start[1])
             hours = int(end[0]) - int(start[0])
         max_seconds = hours * 3600 + minutes * 60
+        return max_seconds
 
-        # print("max_seconds: ", max_seconds)
+    def __filter_places(self, places, start_place, max_seconds, lvl_saturation_stay):
+        start_station = self.__repo.get_station(start_place)
+        if start_station is None:
+            return None, None, "Отсутствует начальная точка маршрута"
+        durations = start_station['duration']
+
+        categories = self.__repo.get_categories()
+
+        t_dest_from_station_to_place = 15 * 60       # 15 минут
 
         filtered_places = []
         for place in places:
