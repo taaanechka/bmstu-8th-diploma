@@ -70,7 +70,8 @@ class RouteRecommenderModel:
             hard_excluded_categories,
             use_prev_history,
             use_common_weights,
-            lvl_activity
+            lvl_activity,
+            exclude_low_rang_routes
         )
         if error is not None:
             return None, None, error
@@ -148,7 +149,8 @@ class RouteRecommenderModel:
             hard_excluded_categories,
             use_prev_history,
             use_common_weights,
-            lvl_activity
+            lvl_activity,
+            exclude_low_rang_routes
     ):
         if len(included_categories) == 0 and not use_prev_history:
             included_categories = self.get_categories()
@@ -187,9 +189,9 @@ class RouteRecommenderModel:
 
         copied_weights = weights.copy()
         for category in soft_excluded_categories:
-            copied_weights[category] -= 0.1
+            copied_weights[category] = copied_weights[category] - 0.8 if copied_weights[category] > 0.8 else 0
 
-        i = 0
+        # i = 0
 
         for place in places:
             place_vector = set(place['categories'])
@@ -209,20 +211,23 @@ class RouteRecommenderModel:
             try:
                 p_with_rang['rang'] = 1 - distance.cosine(
                                             u_vec, p_vec, w_vec)
+                if p_with_rang['title'] == "Московский зоопарк":
+                    print(p_with_rang['rang'])
             except:
                 print("user_vector count: " + str(len(u_vec)))
                 print("place vector count: " + str(len(p_vec)))
                 print("copied_weights count: " + str(len(w_vec)))
                 p_with_rang['rang'] = 0
 
-            if i < 2:
-                print("p_rang: " + str(p_with_rang['rang']))
-                print("u_vec: " + str(u_vec))
-                print("p_vec: " + str(p_vec))
-                print("w_vec: " + str(w_vec))
+            # if i < 2:
+            #     print("p_rang: " + str(p_with_rang['rang']))
+            #     print("u_vec: " + str(u_vec))
+            #     print("p_vec: " + str(p_vec))
+            #     print("w_vec: " + str(w_vec))
 
-            places_with_rang.append(p_with_rang)
-            i += 1
+            if not (exclude_low_rang_routes and p_with_rang['rang'] < 0.001):
+                places_with_rang.append(p_with_rang)
+            # i += 1
 
         return sorted(places_with_rang, key=lambda p: p['rang'], reverse=True), None
 
@@ -235,7 +240,7 @@ class RouteRecommenderModel:
 
         categories = self.__repo.get_categories()
 
-        t_dest_from_station_to_place = 5 * 60       # 5 минут
+        t_dest_from_station_to_place = 15 * 60       # 15 минут
 
         start = start_time.split(':')
         end = end_time.split(':')
@@ -249,7 +254,7 @@ class RouteRecommenderModel:
             hours = int(end[0]) - int(start[0])
         max_seconds = hours * 3600 + minutes * 60
 
-        print("max_seconds: ", max_seconds)
+        # print("max_seconds: ", max_seconds)
 
         filtered_places = []
         for place in places:
@@ -355,7 +360,7 @@ class RouteRecommenderModel:
 
             if check_time == 2:
                 routes += [self.__optimize_route(start_place_name, start_durations, stations, start_time, cur_route)]
-                print("depth: " + str(node["idx"]) + ", routes count: " + str(len(routes)))
+                # print("depth: " + str(node["idx"]) + ", routes count: " + str(len(routes)))
                 stack.pop()
                 continue
 
@@ -376,7 +381,7 @@ class RouteRecommenderModel:
     
 
     def __get_distance_matrix(self, start_durations, stations, places):
-        t_dest_from_station_to_place = 5 * 60       # 5 минут
+        t_dest_from_station_to_place = 15 * 60       # 15 минут
         
         matrix = []
         start_row = [0]
@@ -445,7 +450,7 @@ class RouteRecommenderModel:
             return 3, max_seconds - dist
 
 
-    def __check_rang(self, count_places, sum_rang, limit=0.001):
+    def __check_rang(self, count_places, sum_rang, limit=0.2):
         if count_places == 0:
             return True
         return sum_rang / count_places > limit

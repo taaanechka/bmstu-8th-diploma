@@ -36,6 +36,7 @@ class RouteRecommenderController:
         self.__route_builder_page = self.app.route('/route_builder', methods=['GET'])(self.__route_builder_page)
         self.__story_page = self.app.route('/story', methods=['GET'])(self.__story_page)
         # Backend
+        self.__welcome = self.app.route('/', methods=['GET'])(self.__welcome)
         self.__login = self.app.route('/api/v1/login', methods=['GET'])(self.__login)
         self.__register = self.app.route('/api/v1/register', methods=['POST'])(self.__register)
         self.__get_story = self.app.route('/api/v1/story', methods=['GET'])(self.__get_story)
@@ -58,6 +59,10 @@ class RouteRecommenderController:
         return render_template('story.html')
 
     # Backend
+    def __welcome(self):
+        s = "Добро пожаловать на сайт туристической рекомендательной системы по местам Москвы"
+        return jsonify({"welcome": "Добро пожаловать на сайт туристической рекомендательной системы по местам Москвы"}), 200
+
     def __login(self):
         login = request.args.get('login')
         password = request.args.get('password')
